@@ -17,6 +17,9 @@ pandas2ri.activate()
 
 @api_view(['POST'])
 def predict(request):
+    """Loads the model_logit_aprovacao.rds, retrives from the POST request the list of variables required by predict_aprovacao(),
+    creates a pandas dataframe with the list's values and calls predict_aprovacao() passing the dataframe and the model as arguments
+     """
     try:
         #load r libraries 
         robjects.r('library(base)')
@@ -35,7 +38,7 @@ def predict(request):
        'sucessos_2', 'sucessos_3', 'sucessos_6', 'entrega_3', 'entrega_6', 'entrega_7'])
         
         #calls r function 'predict' 
-        prediction = predict_aprovacao(df, model)[0,1]
+        prediction = predict_aprovacao(df, model)[0,1] #retrives the first and second items in the tuple of the returning of the function predict_aprovacao()
 
         #convert the r object returned from prediction back to a python object
         response_data = {'prediction': prediction} #json that is going to be returned
